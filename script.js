@@ -2,11 +2,21 @@ const c = document.getElementById("canvas"), ctx = c.getContext("2d");
 c.width = innerWidth; c.height = innerHeight;
 
 let info = [
-  "dejavu@localhost","-----------------","OS: NixOS i686","Kernel: 6.9.7",
-  "Uptime: inf","Packages: 1874","Shell: bash 5.2","Resolution: 800x600",
-  "DE: none","WM: sway","WM Theme: default","Terminal: xterm",
-  "CPU: Intel Atom N270 @1.6GHz","GPU: Intel GMA 950","RAM: 512MiB / 1GiB",
-  "Local IP: 81.99.201.42"
+  "User: dejavu@localhost",
+  "Separator: -----------------",
+  "Operating System: NixOS i686",
+  "Sys: quota exceeded",
+  "Kernel Version: 6.9.7",
+  "Uptime: 17 year",
+  "Installed Packages: 1874",
+  "Shell: bash 5.2",
+  "Screen Resolution: 800x600",
+  "Terminal Emulator: xterm",
+  "CPU: Intel Atom N270 @ 1.6GHz",
+  "GPU: Intel GMA 950",
+  "RAM Usage: 512MiB / 1GiB",
+  "Local IP: 81.99.201.42",
+  "GMod: /home/deja/.steam/steam/steamapps/common/GarrysMod"
 ];
 
 let logo = new Image();
@@ -30,3 +40,4 @@ function draw() {
   ctx.fillStyle="#fff"; ctx.font="18px 'Courier New', monospace";
   info.forEach((line,i)=> ctx.fillText(line,x0+s+30,y0+i*22));
 }
+

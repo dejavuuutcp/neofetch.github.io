@@ -1,4 +1,4 @@
-// fuck it, global vars everywhere
+// fuck it global vars everywhere1
 const c = document.getElementById("c");
 const ctx = c.getContext("2d");
 c.width = innerWidth;
@@ -213,3 +213,4 @@ document.addEventListener("keydown", (e) => {
       break;
   }
 });
+

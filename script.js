@@ -13,22 +13,23 @@ let cmd = null;
 let titleInterval = null;
 let iconInterval = null;
 let info = [
-  "User: dejavu@localhost",
-  "Separator: -----------------", 
-  "Operating System: NixOS i686",
-  "Sys: quota exceeded",
-  "Kernel Version: 6.9.7",
-  "Uptime: 17 year",
+  "User:               dejavu@localhost",
+  "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+  "Operating System:   NixOS i686",
+  "Sys:                quota exceeded",
+  "Kernel Version:     6.9.7",
+  "Uptime:             17 year",
   "Installed Packages: 1874",
-  "Shell: bash 5.2",
-  "Screen Resolution: 800x600", 
-  "Terminal Emulator: xterm",
-  "CPU: Intel Atom N270 @ 1.6GHz",
-  "GPU: Intel GMA 950",
-  "RAM Usage: 512MiB / 1GiB",
-  "Local IP: 81.99.201.42", // real ip????
-  "GMod: /home/deja/.steam/steam/steamapps/common/GarrysMod"
+  "Shell:              bash 5.2",
+  "Screen Resolution:  800x600",
+  "Terminal Emulator:  xterm",
+  "CPU:                Intel Atom N270 @ 1.6GHz",
+  "GPU:                Intel GMA 950",
+  "RAM Usage:          128MiB / 512MiB",
+  "Local IP:           81.99.201.42", //omg real ip?????
+  "GMod:               /home/deja/.steam/steam/steamapps/common/GarrysMod"
 ];
+
 img.src = "i01_2.png";
 img.onload = () => type("neofetch", draw);
 
@@ -213,4 +214,5 @@ document.addEventListener("keydown", (e) => {
       break;
   }
 });
+
 

@@ -5,7 +5,7 @@ c.width = innerWidth;
 c.height = innerHeight;
 const icons = ["1.ico", "2.ico", "3.ico"];
 let i = 0;
-const title = "console";
+const title = "terminal";
 const glitch = "!@#$%^&*<>?/\\|12345";
 let chars = title.split("");
 let img = new Image();
@@ -14,24 +14,33 @@ let titleInterval = null;
 let iconInterval = null;
 let info = [
   "User:               dejavu@localhost",
-  "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-  "Operating System:   NixOS i686",
-  "Sys:                quota exceeded",
-  "Kernel Version:     6.9.7",
-  "Uptime:             17 year",
+  "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+  "Operating System:   CrunchBang 11 Waldorf (Debian-based i686)",
   "Installed Packages: 1874",
-  "Shell:              bash 5.2",
   "Screen Resolution:  800x600",
-  "Terminal Emulator:  xterm",
-  "CPU:                Intel Atom N270 @ 1.6GHz",
-  "GPU:                Intel GMA 950",
+  "Kernel Version:     6.9.7",
+  "Processes:          17 (0 user, 1 undefined)",
   "RAM Usage:          128MiB / 512MiB",
   "Local IP:           81.99.201.42", //omg real ip?????
-  "GMod:               /home/deja/.steam/steam/steamapps/common/GarrysMod"
+  "Uptime:             3 days, 4 hours",
+  "Shell:              bash 5.2",
+  "MOTD:               Uptime lies. You died long ago.",
+  "GMod:               /home/deja/.steam/steam/steamapps/common/GarrysMod",
+  "Sys:                quota exceeded",
+  "CPU:                Intel Atom N270 @ 1.6GHz",
+  "GPU:                Intel GMA 950"
 ];
 
+
+function error() {
+  ctx.fillStyle = "#f00";
+  ctx.font = "18px 'Courier New', monospace";
+  ctx.fillText("kernel panic - not syncing: Attempted to kill init!", 40, c.height - 370);
+  ctx.fillText("enjoy!", 40, c.height - 350);
+}
+
 img.src = "i01_2.png";
-img.onload = () => type("neofetch", draw);
+img.onload = () => type("neofetch", () => { draw();error();});
 
 function type(text, cb) {
   let p = "dejavu@localhost:~$ ";
@@ -66,7 +75,7 @@ function draw() {
   if (now - lastDrawTime < 16) return; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~60fps
   lastDrawTime = now;
   
-  let x = 40, y = 80, sz = 500;
+  let x = 40, y = 65, sz = 500;
   
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, c.width, c.height);
@@ -77,12 +86,10 @@ function draw() {
     ctx.fillText(cmd, x, 40);
   }
   
-  if (img.complete && img.naturalWidth > 0) {
-    ctx.filter = "grayscale(100%)";
-    ctx.drawImage(img, x, y, sz, sz);
-    ctx.filter = "none";
-  }
-  
+if (img.complete && img.naturalWidth > 0) {
+  ctx.drawImage(img, x, y, sz, sz);
+}
+
   ctx.fillStyle = "#fff";
   ctx.font = "18px 'Courier New', monospace";
   info.forEach((line, idx) => {
@@ -214,5 +221,3 @@ document.addEventListener("keydown", (e) => {
       break;
   }
 });
-
-

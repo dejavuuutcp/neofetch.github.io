@@ -13,7 +13,7 @@ let cmd = null;
 let titleInterval = null;
 let iconInterval = null;
 let info = [
-  "User:               dejavu@localhost",
+  "User:               dejavu@crunchbang",
   "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
   "Operating System:   CrunchBang 11 Waldorf (Debian-based i686)",
   "Installed Packages: 1874",
@@ -21,10 +21,10 @@ let info = [
   "Kernel Version:     6.9.7",
   "Processes:          17 (0 user, 1 undefined)",
   "RAM Usage:          128MiB / 512MiB",
-  "Local IP:           81.99.201.42", //omg real ip?????
   "Uptime:             3 days, 4 hours",
   "Shell:              bash 5.2",
   "MOTD:               Uptime lies. You died long ago.",
+  "IPv4:               203.0.113.42", //omg real ip?????
   "GMod:               /home/deja/.steam/steam/steamapps/common/GarrysMod",
   "Sys:                quota exceeded",
   "CPU:                Intel Atom N270 @ 1.6GHz",
@@ -43,7 +43,7 @@ img.src = "i01_2.png";
 img.onload = () => type("neofetch", () => { draw();error();});
 
 function type(text, cb) {
-  let p = "dejavu@localhost:~$ ";
+  let p = "dejavu@crunchbang:~$ ";
   let s = "";
   let idx = 0;
   let blink = true;
@@ -221,3 +221,4 @@ document.addEventListener("keydown", (e) => {
       break;
   }
 });
+

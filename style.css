@@ -1,4 +1,4 @@
-/* whatever */
+/* pis */
 body { 
   margin: 0; 
   background: #000; 
@@ -29,11 +29,9 @@ body {
 
 #btn:hover { 
   opacity: 1;
-  /*cool1*/
 }
 
 #vol {
-  -webkit-appearance: none;
   width: 60px;
   height: 1px;
   background: #333;
@@ -65,40 +63,4 @@ body {
   color: #fff;
   font-size: 10px;
   opacity: 0.5;
-}
-
-#corner-img {
-  position: fixed;
-  bottom: 20px;
-  left: 1700px;
-  width: 200px;
-  height: 200px;
-  background: url('5.jpg') center/cover;
-  border-radius: 10px;
-  box-shadow: 
-    inset 0 0 50px rgba(0,0,0,0.8),
-    inset 0 0 100px rgba(0,0,0,0.6),
-    0 5px 15px rgba(0,0,0,0.5);
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
-}
-
-#corner-img:hover {
-  opacity: 1;
-}
-
-#corner-img::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at top left, rgba(0,0,0,0.7) 0%, transparent 50%),
-    radial-gradient(circle at top right, rgba(0,0,0,0.7) 0%, transparent 50%),
-    radial-gradient(circle at bottom left, rgba(0,0,0,0.7) 0%, transparent 50%),
-    radial-gradient(circle at bottom right, rgba(0,0,0,0.7) 0%, transparent 50%);
-  border-radius: 10px;
-  pointer-events: none;
 }

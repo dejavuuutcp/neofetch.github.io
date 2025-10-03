@@ -1,224 +1,199 @@
-// fuck it global vars everywhere1
-const c = document.getElementById("c");
-const ctx = c.getContext("2d");
-c.width = innerWidth;
-c.height = innerHeight;
-const icons = ["1.ico", "2.ico", "3.ico"];
-let i = 0;
-const title = "terminal";
-const glitch = "!@#$%^&*<>?/\\|12345";
-let chars = title.split("");
-let img = new Image();
-let cmd = null;
-let titleInterval = null;
-let iconInterval = null;
-let info = [
-  "User:               dejavu@crunchbang",
-  "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-  "Operating System:   CrunchBang 11 Waldorf (Debian-based i686)",
-  "Installed Packages: 1874",
-  "Screen Resolution:  800x600",
-  "Kernel Version:     6.9.7",
-  "Processes:          17 (0 user, 1 undefined)",
-  "RAM Usage:          128MiB / 512MiB",
-  "Uptime:             3 days, 4 hours",
-  "Shell:              bash 5.2",
-  "MOTD:               Uptime lies. You died long ago.",
-  "IPv4:               203.0.113.42", //omg real ip?????
-  "GMod:               /home/deja/.steam/steam/steamapps/common/GarrysMod",
-  "Sys:                quota exceeded",
-  "CPU:                Intel Atom N270 @ 1.6GHz",
-  "GPU:                Intel GMA 950"
-];
+(() => {
+  "use strict"; // 1
 
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+  const favicon = document.getElementById("fav");
+  const icons = ["1.ico", "2.ico", "3.ico"];
 
-function error() {
-  ctx.fillStyle = "#f00";
-  ctx.font = "18px 'Courier New', monospace";
-  ctx.fillText("kernel panic - not syncing: Attempted to kill init!", 40, c.height - 370);
-  ctx.fillText("enjoy!", 40, c.height - 350);
-}
+  const info = [
+    "User:               dejavu@crunchbang",
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    "Operating System:   CrunchBang 11 Waldorf (Debian-based i686)",
+    "Installed Packages: 1874",
+    "Screen Resolution:  800x600",
+    "Kernel Version:     6.9.7",
+    "Processes:          17 (0 user, 1 undefined)",
+    "RAM Usage:          128MiB / 512MiB",
+    "GMod dir:           /home/deja/.steam/steam/steamapps/common/GarrysMod",
+    "Uptime:             3 days, 4 hours",
+    "Shell:              bash 5.2",
+    "MOTD:               Uptime lies. You died long ago.",
+    "IPv4:               203.0.113.42",
+    "CPU:                Intel Atom N270 @ 1.6GHz",
+    "GPU:                Intel GMA 950"
+  ];
 
-img.src = "i01_2.png";
-img.onload = () => type("neofetch", () => { draw();error();});
+  let cmd = null;
+  let lastDraw = 0;
 
-function type(text, cb) {
-  let p = "dejavu@crunchbang:~$ ";
-  let s = "";
-  let idx = 0;
-  let blink = true;
-  
-  let t = setInterval(() => {
-    s = text.slice(0, idx);
-    
+  const resizeCanvas = () => {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+  };
+  resizeCanvas();
+
+  const drawError = () => {
+    ctx.fillStyle = "#f00";
+    ctx.font = "18px 'Courier New', monospace";
+    ctx.fillText("kernel panic - not syncing: Attempted to kill init!", 40, canvas.height - 370);
+    ctx.fillText("enjoy!", 40, canvas.height - 350);
+  };
+
+  function typeCommand(text, cb) {
+    const prefix = "dejavu@crunchbang:~$ ";
+    let idx = 0;
+    let blink = true;
+
+    const interval = setInterval(() => {
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, canvas.width, 60);
+
+      ctx.fillStyle = "#fff";
+      ctx.font = "20px 'Courier New', monospace";
+      ctx.fillText(prefix + text.slice(0, idx) + (blink ? "_" : ""), 40, 40);
+      blink = !blink;
+
+      if (idx++ > text.length) {
+        clearInterval(interval);
+        cmd = prefix + text;
+        cb?.();
+      }
+    }, 150);
+  }
+
+  const img = new Image();
+  img.src = "z.jpg";
+
+  function draw() {
+    const now = performance.now();
+    if (now - lastDraw < 16) return;
+    lastDraw = now;
+
+    const x = 40, y = 65, size = 500;
+
     ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, c.width, 60);
-    
-    ctx.fillStyle = "#fff";
-    ctx.font = "20px 'Courier New', monospace";
-    ctx.fillText(p + s + (blink ? "_" : ""), 40, 40);
-    
-    blink = !blink;
-    if (idx <= text.length) {
-      idx++;
-    } else {
-      clearInterval(t);
-      cmd = p + text;
-      cb && cb();
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (cmd) {
+      ctx.fillStyle = "#fff";
+      ctx.font = "20px 'Courier New', monospace";
+      ctx.fillText(cmd, x, 40);
     }
-  }, 150);
-}
 
-let lastDrawTime = 0;
-function draw() {
-  const now = Date.now();
-  if (now - lastDrawTime < 16) return; // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~60fps
-  lastDrawTime = now;
-  
-  let x = 40, y = 65, sz = 500;
-  
-  ctx.fillStyle = "#000";
-  ctx.fillRect(0, 0, c.width, c.height);
-  
-  if (cmd) {
+    if (img.complete && img.naturalWidth) {
+      ctx.drawImage(img, x, y, size, size);
+    }
+
     ctx.fillStyle = "#fff";
-    ctx.font = "20px 'Courier New', monospace";
-    ctx.fillText(cmd, x, 40);
-  }
-  
-if (img.complete && img.naturalWidth > 0) {
-  ctx.drawImage(img, x, y, sz, sz);
-}
+    ctx.font = "18px 'Courier New', monospace";
+    info.forEach((line, i) => ctx.fillText(line, x + size + 30, y + i * 22));
 
-  ctx.fillStyle = "#fff";
-  ctx.font = "18px 'Courier New', monospace";
-  info.forEach((line, idx) => {
-    ctx.fillText(line, x + sz + 30, y + idx * 22);
+  }
+
+  img.onload = () => typeCommand("neofetch", () => {
+    draw();
+    drawError();
   });
-}
 
-let titleCache = title;
-function fuckWithTitle() {
-  if (Math.random() < 0.7) return;
-  
-  let newTitle = "";
-  for (let j = 0; j < chars.length; j++) {
-    if (Math.random() < 0.3) {
-      newTitle += glitch[Math.floor(Math.random() * glitch.length)];
-    } else {
-      newTitle += chars[j];
+  let iconIdx = 0;
+  setInterval(() => {
+    if (!favicon) return;
+    favicon.href = icons[iconIdx];
+    iconIdx = (iconIdx + 1) % icons.length;
+  }, 1000);
+
+  let resizeTimeout;
+  addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      resizeCanvas();
+      if (cmd) draw();
+    }, 100);
+  });
+
+  class MusicPlayer {
+    constructor() {
+      this.audio = document.getElementById("music");
+      this.btn = document.getElementById("btn");
+      this.vol = document.getElementById("vol");
+      this.pct = document.getElementById("pct");
+
+      if (!this.audio) return;
+      this.init();
+    }
+
+    init() {
+      this.audio.volume = 0.2;
+      this.updateUI();
+
+      this.btn?.addEventListener("click", () => this.toggle());
+      this.vol?.addEventListener("input", () => this.changeVolume());
+      this.audio.addEventListener("ended", () => this.updateBtn());
+      this.audio.addEventListener("play", () => this.updateBtn());
+      this.audio.addEventListener("pause", () => this.updateBtn());
+
+      this.audio.addEventListener("error", () => {
+        if (this.btn) {
+          this.btn.disabled = true;
+          this.btn.textContent = "holyshit111";
+        }
+      });
+
+      this.audio.play().catch(() => {
+        document.body.addEventListener("click", () => {
+          this.audio.play();
+        }, { once: true });
+      });
+    }
+
+    toggle() {
+      if (this.audio.paused) this.audio.play().catch(() => {});
+      else this.audio.pause();
+    }
+
+    changeVolume() {
+      this.audio.volume = parseFloat(this.vol.value);
+      this.updateUI();
+    }
+
+    updateBtn() {
+      if (this.btn) this.btn.textContent = this.audio.paused ? "Play" : "Pause";
+    }
+
+    updateUI() {
+      if (this.pct) this.pct.textContent = Math.round(this.audio.volume * 100) + "%";
+    }
+
+    adjust(delta) {
+      const vol = Math.max(0, Math.min(1, this.audio.volume + delta));
+      this.audio.volume = vol;
+      if (this.vol) this.vol.value = vol;
+      this.updateUI();
     }
   }
-  
-  if (newTitle !== titleCache) {
-    document.title = newTitle;
-    titleCache = newTitle;
-  }
-}
 
-function nextIcon() {
-  const fav = document.getElementById("fav");
-  if (fav) {
-    fav.href = icons[i];
-    i = (i + 1) % icons.length;
-  }
-}
+  const player = new MusicPlayer();
 
-titleInterval = setInterval(fuckWithTitle, 500);
-iconInterval = setInterval(nextIcon, 1000);
+  let lastKey = 0;
+  document.addEventListener("keydown", e => {
+    const now = performance.now();
+    if (now - lastKey < 50) return;
+    lastKey = now;
 
-let resizeTimeout;
-window.addEventListener("resize", () => {
-  clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(() => {
-    c.width = innerWidth;
-    c.height = innerHeight;
-    if (cmd) draw();
-  }, 100);
-});
-
-window.addEventListener("beforeunload", () => {
-  clearInterval(titleInterval);
-  clearInterval(iconInterval);
-  clearTimeout(resizeTimeout);
-});
-
-class music {
-  constructor() {
-    this.a = document.getElementById("music");
-    this.b = document.getElementById("btn");  
-    this.v = document.getElementById("vol");
-    this.p = document.getElementById("pct");
-    
-    if (!this.a || !this.b || !this.v || !this.p) return;
-    
-    this.setup();
-  }
-  
-  setup() {
-    this.a.volume = 0.2;
-    this.updatePct();
-    
-    this.b.onclick = () => this.toggle();
-    this.v.oninput = () => this.changeVol();
-    this.a.onended = () => this.updateBtn();
-    this.a.onplay = () => this.updateBtn();  
-    this.a.onpause = () => this.updateBtn();
-    
-    this.a.onerror = () => {
-      this.b.disabled = true;
-      this.b.textContent = "holyshit111";
-    };
-  }
-  
-  toggle() {
-    if (this.a.paused) {
-      this.a.play().catch(e => console.log("autoplay blocked, deal with it"));
-    } else {
-      this.a.pause();
+    switch (e.code) {
+      case "Space":
+        e.preventDefault();
+        player?.toggle();
+        break;
+      case "ArrowUp":
+        player?.adjust(0.05);
+        break;
+      case "ArrowDown":
+        player?.adjust(-0.05);
+        break;
     }
-  }
-  
-  changeVol() {
-    this.a.volume = parseFloat(this.v.value);
-    this.updatePct();
-  }
-  
-  updateBtn() {
-    this.b.textContent = this.a.paused ? "Play" : "Pause";
-  }
-  
-  updatePct() {
-    this.p.textContent = Math.round(this.a.volume * 100) + "%";
-  }
-  
-  adjustVol(delta) {
-    let newVol = Math.max(0, Math.min(1, this.a.volume + delta));
-    this.a.volume = newVol;
-    this.v.value = newVol;
-    this.updatePct();
-  }
-}
+  });
 
-const player = new music();
-
-let lastKeyTime = 0;
-document.addEventListener("keydown", (e) => {
-  const now = Date.now();
-  if (now - lastKeyTime < 50) return;
-  lastKeyTime = now;
-  
-  switch(e.code) {
-    case "Space":
-      e.preventDefault();
-      if (player) player.toggle();
-      break;
-    case "ArrowUp":
-      if (player) player.adjustVol(0.05);
-      break; 
-    case "ArrowDown":
-      if (player) player.adjustVol(-0.05);
-      break;
-  }
-});
-
+})();
+console.log("helloworld?");
